@@ -33,15 +33,18 @@ void open_file(char *the_file)
 void read_file(FILE *fd)
 {
 	int line_n;
-	int format = 0;
-	char *lineprt = NULL;
-	size_t n = 0;
+	int format;
+	char *lineprt;
+	size_t n;
+
+	format = 0;
+	lineprt = NULL;
+	n = 0;
 
 	if (fd == NULL)
-	{
 		err(2, "file_name");
-	}
-	for (line_n = 1; getline(&lineprt, &n, fd) != -1; line_n++)
+
+	for (line_n = 1; getline(&lineprt, &n, fd) != EOF; line_n++)
 	{
 		format = interpret_line(lineprt, line_n, format);
 	}
@@ -141,10 +144,10 @@ void find_func(char *opcode, char *value, int ln, int format)
  */
 void call_fun(op_func f, char *op, char *val, int ln, int format)
 {
-	stack_t *head = NULL;
 	stack_t *node;
 	int flag;
 	int i;
+	stack_t *head = NULL;
 
 	flag = 1;
 	if (strcmp(op, "push") == 0)
